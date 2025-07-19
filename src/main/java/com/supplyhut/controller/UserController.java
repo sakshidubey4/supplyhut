@@ -12,6 +12,14 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
+    @GetMapping("/")
+public String home() {
+    return "Welcome to SupplyHut backend!";
+}
+
+
+
+
     @Autowired
     private UserRepository userRepository;
 
