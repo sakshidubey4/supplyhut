@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SupplyHut - Products</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+
+    .product-list {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+    }
+
+    th {
+      background: #34495e;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SupplyHut - Products for You</h1>
+  </header>
+
+  <div class="product-list">
+    <h2>Available Products</h2>
+    <table>
+      <tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th></tr>
+      <tr><td>101</td><td>Rice</td><td>Grocery</td><td>₹50</td></tr>
+      <tr><td>102</td><td>Wheat</td><td>Grocery</td><td>₹45</td></tr>
+      <tr><td>103</td><td>Oil</td><td>Essentials</td><td>₹120</td></tr>
+    </table>
+  </div>
+
+</body>
+</html>

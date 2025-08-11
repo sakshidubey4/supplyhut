@@ -15,7 +15,13 @@ public class UserController {
     @GetMapping("/")
 public String home() {
     return "Welcome to SupplyHut backend!";
+}  
+
+@GetMapping("/findbyemail/{email}")
+public User getUserByEmail(@PathVariable String email) {
+    return userRepository.findByEmail(email).orElse(null);
 }
+
 
 
 

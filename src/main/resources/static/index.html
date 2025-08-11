@@ -1,62 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>SupplyHut - User Portal</title>
+  <meta charset="UTF-8">
+  <title>SupplyHut - User Portal</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>SupplyHut - Test Register & Login</h1>
+  <div class="container">
+    <h1>SupplyHut - Register & Login</h1>
 
-    <h2>Register</h2>
-    <form id="registerForm">
-        <input type="text" id="regName" placeholder="Name" required><br>
-        <input type="email" id="regEmail" placeholder="Email" required><br>
-        <input type="password" id="regPassword" placeholder="Password" required><br>
+    <!-- Registration Form -->
+    <section class="form-section">
+      <h2>Register</h2>
+      <form id="registerForm">
+        <input type="text" id="name" placeholder="Name" required><br>
+        <input type="email" id="email" placeholder="Email" required><br>
+        <input type="password" id="password" placeholder="Password" required><br>
+        <input type="text" id="role" placeholder="Role (e.g., admin or user)" required><br>
         <button type="submit">Register</button>
-    </form>
+      </form>
+    </section>
 
-    <h2>Login</h2>
-    <form id="loginForm">
+    <!-- Login Form -->
+    <section class="form-section">
+      <h2>Login</h2>
+      <form id="loginForm">
         <input type="email" id="loginEmail" placeholder="Email" required><br>
         <input type="password" id="loginPassword" placeholder="Password" required><br>
         <button type="submit">Login</button>
-    </form>
+      </form>
+    </section>
 
     <p id="response"></p>
+  </div>
 
-    <script>
-        const baseUrl = "http://localhost:8080/api/users";
+  <script>
+    const baseUrl = "http://localhost:8080/api/users";
 
-        document.getElementById("registerForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const name = document.getElementById("regName").value;
-            const email = document.getElementById("regEmail").value;
-            const password = document.getElementById("regPassword").value;
+    // Register User
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value;
 
-            const response = await fetch(`${baseUrl}/register`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, password })
-            });
+      const response = await fetch(`${baseUrl}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, role })
+      });
 
-            const text = await response.text();
-            document.getElementById("response").innerText = "Register: " + text;
-        });
+      const text = await response.text();
+      document.getElementById("response").innerText = "Register: " + text;
+    });
 
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const email = document.getElementById("loginEmail").value;
-            const password = document.getElementById("loginPassword").value;
+    // Login User
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
 
-            const response = await fetch(`${baseUrl}/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
-            });
+      const response = await fetch(`${baseUrl}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
 
-            const text = await response.text();
-            document.getElementById("response").innerText = "Login: " + text;
-        });
-    </script>
+      const text = await response.text();
+
+      if (text.toLowerCase().includes("successful")) {
+        // Get role from backend
+        const userRes = await fetch(`${baseUrl}/findbyemail/${email}`);
+        const user = await userRes.json();
+
+        if (user && user.role === "admin") {
+          window.location.href = "admin.html"; // redirect to admin page
+        } else {
+          window.location.href = "dashboard.html"; // redirect to user dashboard
+        }
+      } else {
+        document.getElementById("response").innerText = "Login: " + text;
+      }
+    });
+  </script>
 </body>
 </html>

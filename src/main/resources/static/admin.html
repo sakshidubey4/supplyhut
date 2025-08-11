@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel - SupplyHut</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+
+    .tabs {
+      display: flex;
+      background-color: #34495e;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 1rem;
+      cursor: pointer;
+      background-color: #34495e;
+      color: white;
+      border: none;
+      text-align: center;
+    }
+
+    .tab-button:hover, .tab-button.active {
+      background-color: #2c3e50;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 2rem;
+      background-color: white;
+      min-height: 300px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 0.8rem;
+      text-align: left;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .form-inline {
+      margin-top: 1rem;
+    }
+
+    .form-inline input {
+      margin: 0.5rem 0.5rem 0.5rem 0;
+      padding: 0.4rem;
+    }
+
+    .form-inline button {
+      padding: 0.4rem 1rem;
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .form-inline button:hover {
+      background-color: #1a242f;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SupplyHut Admin Panel</h1>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-button active" onclick="openTab('products')">Products</button>
+    <button class="tab-button" onclick="openTab('stock')">Stock</button>
+    <button class="tab-button" onclick="openTab('orders')">Orders</button>
+    <button class="tab-button" onclick="openTab('supply')">Supply</button>
+    <button class="tab-button" onclick="openTab('users')">Users</button>
+  </div>
+
+  <!-- Products Tab -->
+  <div id="products" class="tab-content active">
+    <h2>Manage Products</h2>
+    <p>View, add, or edit product listings.</p>
+
+    <!-- Product Table -->
+    <table>
+      <tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th></tr>
+      <tr><td>101</td><td>Rice</td><td>Grocery</td><td>₹50</td></tr>
+    </table>
+
+    <!-- Add Product Form -->
+    <div class="form-inline">
+      <input type="text" id="productName" placeholder="Product Name" required>
+      <input type="text" id="productCategory" placeholder="Category" required>
+      <input type="number" id="productPrice" placeholder="Price ₹" required>
+      <button onclick="addProduct()">Add Product</button>
+    </div>
+  </div>
+
+  <!-- Stock Tab -->
+  <div id="stock" class="tab-content">
+    <h2>Stock Levels</h2>
+    <p>Track available quantities of each item.</p>
+    <table>
+      <tr><th>Product</th><th>Available</th><th>Reorder Level</th></tr>
+      <tr><td>Rice</td><td>120kg</td><td>50kg</td></tr>
+    </table>
+  </div>
+
+  <!-- Orders Tab -->
+  <div id="orders" class="tab-content">
+    <h2>Order Management</h2>
+    <p>Process pending and completed orders.</p>
+    <table>
+      <tr><th>Order ID</th><th>Customer</th><th>Status</th></tr>
+      <tr><td>ORD123</td><td>Kirana Mart</td><td>Delivered</td></tr>
+    </table>
+  </div>
+
+  <!-- Supply Tab -->
+  <div id="supply" class="tab-content">
+  <h2>Supplier & Delivery</h2>
+  <p>Manage delivery schedules and suppliers.</p>
+
+  <!-- Add Supplier Form -->
+  <form id="addSupplierForm" style="margin-bottom: 1.5rem;">
+    <input type="text" id="supplierName" placeholder="Supplier Name" required>
+    <input type="text" id="supplierContact" placeholder="Contact Number" required>
+    <input type="text" id="itemsSupplied" placeholder="Items Supplied (comma separated)" required>
+    <button type="submit">Add Supplier</button>
+  </form>
+
+  <!-- Supplier Table -->
+  <table id="supplierTable">
+    <thead>
+      <tr>
+        <th>Supplier</th>
+        <th>Contact</th>
+        <th>Items Supplied</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Agro Distributors</td>
+        <td>9876543210</td>
+        <td>Wheat, Rice</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+  <!-- Users Tab -->
+  <div id="users" class="tab-content">
+    <h2>User Accounts</h2>
+    <p>View registered users and their roles.</p>
+    <table>
+      <tr><th>User ID</th><th>Name</th><th>Email</th><th>Role</th></tr>
+      <tr><td>1</td><td>Sakshi</td><td>sakshi@example.com</td><td>Admin</td></tr>
+    </table>
+  </div>
+
+  <script>
+    function openTab(tabId) {
+      const buttons = document.querySelectorAll(".tab-button");
+      const contents = document.querySelectorAll(".tab-content");
+
+      buttons.forEach(btn => btn.classList.remove("active"));
+      contents.forEach(content => content.classList.remove("active"));
+
+      document.getElementById(tabId).classList.add("active");
+      event.target.classList.add("active");
+    }
+
+    function addProduct() {
+      const name = document.getElementById("productName").value;
+      const category = document.getElementById("productCategory").value;
+      const price = document.getElementById("productPrice").value;
+
+      if (!name || !category || !price) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      const table = document.querySelector("#products table");
+      const newRow = table.insertRow(-1);
+
+      const idCell = newRow.insertCell(0);
+      const nameCell = newRow.insertCell(1);
+      const categoryCell = newRow.insertCell(2);
+      const priceCell = newRow.insertCell(3);
+
+      idCell.innerText = table.rows.length - 1 + 100;
+      nameCell.innerText = name;
+      categoryCell.innerText = category;
+      priceCell.innerText = "₹" + price;
+
+      // Clear inputs
+      document.getElementById("productName").value = "";
+      document.getElementById("productCategory").value = "";
+      document.getElementById("productPrice").value = "";
+    }
+  </script>
+  <script>
+  function openTab(tabId) {
+    const buttons = document.querySelectorAll(".tab-button");
+    const contents = document.querySelectorAll(".tab-content");
+
+    buttons.forEach(btn => btn.classList.remove("active"));
+    contents.forEach(content => content.classList.remove("active"));
+
+    document.getElementById(tabId).classList.add("active");
+    event.target.classList.add("active");
+  }
+
+  // Handle Add Supplier Form
+  document.getElementById("addSupplierForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("supplierName").value;
+    const contact = document.getElementById("supplierContact").value;
+    const items = document.getElementById("itemsSupplied").value;
+
+    // Create new row
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+      <td>${name}</td>
+      <td>${contact}</td>
+      <td>${items}</td>
+    `;
+
+    // Append to table
+    document.querySelector("#supplierTable tbody").appendChild(newRow);
+
+    // Clear form
+    document.getElementById("addSupplierForm").reset();
+  });
+</script>
+
+
+</body>
+</html>
